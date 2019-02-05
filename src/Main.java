@@ -23,6 +23,7 @@ public class Main {
         System.out.println("Start Game? Y/N ");
         if (user.nextLine().toLowerCase().equals("y")) {
             System.out.println("ok buddy");
+            myRoom = map.getStartingRoomObj();
             gameplay();
         } else {
             System.out.println("ok");
@@ -33,9 +34,8 @@ public class Main {
      * gameplay handling user input and system output
      */
     private static void gameplay() {
-        System.out.println("You start in " + map.getStartingRoom());
-        myRoom = map.getStartingRoomObj();
-        displayPaths(map.getStartingRoomObj());
+        System.out.println("You are in " + map.roomNameParse(myRoom.getName()));
+        displayPaths(myRoom);
     }
 
     private static void displayPaths(Rooms room) {
@@ -43,10 +43,24 @@ public class Main {
         for (String pathOption : tempPathStrings) {
             System.out.println("You can see " + map.roomNameParse(pathOption));
         }
+        System.out.println("What Now? :");
+        scanForMovement();
     }
 
-    private static void scanForMovement() {
-
+    private static boolean scanForMovement() {
+        ArrayList<String> tempPathStrings = map.printAccesibleRooms(myRoom);
+        String input = user.nextLine();
+        for (String checkMatch : tempPathStrings) {
+            if (input.toLowerCase().equals("go " + map.roomNameParse(checkMatch).toLowerCase())) {
+                System.out.println("Going over to " + map.roomNameParse(checkMatch).toLowerCase() + ".");
+                myRoom = map.accesibleRooms(myRoom).get(tempPathStrings.indexOf(checkMatch));
+                gameplay();
+                return true;
+            }
+        }
+        System.out.println("You can't go to " + input + ".\n");
+        displayPaths(myRoom);
+        return false;
     }
 
     private static void getInfo() {

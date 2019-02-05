@@ -1,5 +1,5 @@
 import com.google.gson.Gson;
-
+import java.util.ArrayList;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
@@ -13,6 +13,8 @@ public class Main {
     private static Scanner user = new Scanner(System.in);
     // The map as found from Json
     private static Maps map;
+    // The current room
+    private static Rooms myRoom;
 
     public static void main(String[] args) {
         getInfo();
@@ -25,8 +27,6 @@ public class Main {
         } else {
             System.out.println("ok");
         }
-
-
     }
 
     /**
@@ -34,22 +34,30 @@ public class Main {
      */
     private static void gameplay() {
         System.out.println("You start in " + map.getStartingRoom());
+        myRoom = map.getStartingRoomObj();
+        displayPaths(map.getStartingRoomObj());
+    }
+
+    private static void displayPaths(Rooms room) {
+        ArrayList<String> tempPathStrings = map.printAccesibleRooms(room);
+        for (String pathOption : tempPathStrings) {
+            System.out.println("You can see " + map.roomNameParse(pathOption));
+        }
+    }
+
+    private static void scanForMovement() {
+
     }
 
     private static void getInfo() {
         try {
-            // This code is from the lecture notes
             URL url = new URL("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
             InputStream inStream = url.openStream();
             jsonString = convertStreamToString(inStream);
             System.out.println(jsonString);
-
         } catch (Exception MalformedURLException) {
             System.out.println("Malformed URL Error");
         }
-
-
-
     }
 
     // Peter Mortennson
@@ -59,4 +67,3 @@ public class Main {
         return s.hasNext() ? s.next() : "";
     }
 }
-

@@ -15,19 +15,35 @@ public class Main {
     private static Maps map;
     // The current room
     private static Rooms myRoom;
+    // The url that is going to be used, default to the one from rubric
+    private static String urlString = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
 
     public static void main(String[] args) {
-        getInfo();
-        Gson gson = new Gson();
-        map = gson.fromJson(jsonString, Maps.class);
-        System.out.println("Start Game? Y/N ");
+
+        System.out.println("Start Game? Choose N to change map Y/N ");
         if (user.nextLine().toLowerCase().equals("y")) {
             System.out.println("ok buddy");
+            getInfo();
+            Gson gson = new Gson();
+            map = gson.fromJson(jsonString, Maps.class);
             myRoom = map.getStartingRoomObj();
             displayPaths(myRoom);
         } else {
-            System.out.println("ok");
+            System.out.println("Enter a different map url or 'exit' to quit:");
+            String input = user.nextLine();
+
+            if (input.equals("exit")) {
+                System.exit(69);
+            } else {
+                urlString = input;
+                getInfo();
+                Gson gson = new Gson();
+                map = gson.fromJson(jsonString, Maps.class);
+                myRoom = map.getStartingRoomObj();
+                displayPaths(myRoom);
+            }
         }
+
     }
 
 
@@ -80,11 +96,13 @@ public class Main {
 
     private static void getInfo() {
         try {
-            URL url = new URL("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
+            URL url = new URL(urlString);
             InputStream inStream = url.openStream();
             jsonString = convertStreamToString(inStream);
         } catch (Exception MalformedURLException) {
-            System.out.println("Malformed URL Error");
+            System.out.println("Malformed URL Error, please try a different URL");
+            String[] args = {" ", " "};
+            main(args);
         }
     }
 

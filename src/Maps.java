@@ -2,12 +2,24 @@ import java.util.ArrayList;
 
 public class Maps {
     // The starting room
-    private String startingRoom;
+    private String startingRoom = "";
     // An array of all rooms as Rooms objects
     private Rooms[] rooms;
     // The ending room
-    private String endingRoom;
+    private String endingRoom = "";
 
+    /**
+     * Constructor for testing mostly.
+     */
+    public Maps() {
+    }
+
+    public boolean checkMap() {
+        if (!this.startingRoom.equals("") && !this.endingRoom.equals("")) {
+            return true;
+        }
+        return false;
+    }
     /**
      * Gets the room name as a String parsed to have spaces and all that.
      * @return The room name parsed to have spaces.

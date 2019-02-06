@@ -4,22 +4,37 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
-
+/**
+ * Main function that handles gameplay
+ */
 public class Main {
 
-    // json file in String format
+    /**
+     * The json file as a string.
+     */
     private static String jsonString = "";
-    // User input scanner
+    /**
+     * User input scanner.
+     */
     private static Scanner user = new Scanner(System.in);
-    // The map as found from Json
+    /**
+     * The current map.
+     */
     private static Maps map;
-    // The current room
+    /**
+     * The Rooms object of the room the player is currently in.
+     */
     private static Rooms myRoom;
-    // The url that is going to be used, default to the one from rubric
+    /**
+     * The url of the current json to be used, default set here.
+     */
     private static String urlString = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
 
+    /**
+     * Main function that starts the game, or allows new url to be input.
+     * @param args
+     */
     public static void main(String[] args) {
-
         System.out.println("Start Game? Choose N to change map Y/N ");
         if (user.nextLine().toLowerCase().equals("y")) {
             System.out.println("ok buddy");
@@ -46,11 +61,21 @@ public class Main {
 
     }
 
-
-    private static void displayPaths(Rooms room) {
+    /**
+     * During gameplay, this function handles results of getting to new room.
+     * @param room current room
+     * @return true if success, false if room was invalid
+     */
+    public static boolean displayPaths(Rooms room) {
+        // Test that it is a usable room
+        try {
+            map.printAccesibleRooms(room).get(0);
+        } catch (Exception E) {
+            System.out.println("Room does not exist or is not connected to any rooms");
+            return false;
+        }
         System.out.println("You are in " + map.roomNameParse(myRoom.getName()));
         System.out.println(myRoom.getDescription());
-
         ArrayList<String> tempPathStrings = map.printAccesibleRooms(room);
         for (String pathOption : tempPathStrings) {
             System.out.println("You can see " + map.roomNameParse(pathOption));
@@ -60,19 +85,23 @@ public class Main {
         }
         System.out.println("What Now?");
         scanForMovement();
+        return true;
     }
 
+    /**
+     * Called when it is time to ask the user what they want to do next, takes user input
+     * and decides what to do next.
+     */
     private static void scanForMovement() {
-
         ArrayList<String> tempPathStrings = new ArrayList<>();
         for (Directions dir : myRoom.getAllDirections()) {
             tempPathStrings.add(dir.getDirectionName());
         }
-
         String input = user.nextLine();
         if (input.toLowerCase().equals("quit") || input.toLowerCase().equals("exit")) {
             System.exit(69);
         }
+        // Checks for a matching direction, then decides what to do from there
         for (String checkMatch : tempPathStrings) {
             if (input.toLowerCase().equals("go " + map.roomNameParse(checkMatch).toLowerCase())) {
                 System.out.println("Going " + map.roomNameParse(checkMatch).toLowerCase() + ".");
@@ -84,7 +113,7 @@ public class Main {
                 displayPaths(myRoom);
             }
         }
-
+        // Goes through invalid outputs and decides what to say
         char[] shakedown = input.toLowerCase().toCharArray();
         if (shakedown[0] == 'g' && shakedown[1] == 'o') {
             System.out.println("You can't " + input + ".\n");
@@ -94,7 +123,19 @@ public class Main {
         displayPaths(myRoom);
     }
 
-    private static void getInfo() {
+    /**
+     * Setter for test cases.
+     * @param url url to set.
+     */
+    public static boolean setUrl(String url) {
+        urlString = url;
+        return getInfo();
+    }
+
+    /**
+     * Gets the json file from given source urlString.
+     */
+    private static boolean getInfo() {
         try {
             URL url = new URL(urlString);
             InputStream inStream = url.openStream();
@@ -104,6 +145,7 @@ public class Main {
             String[] args = {" ", " "};
             main(args);
         }
+        return true;
     }
 
     // Peter Mortennson

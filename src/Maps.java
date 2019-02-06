@@ -5,7 +5,8 @@ public class Maps {
     private String startingRoom;
     // An array of all rooms as Rooms objects
     private Rooms[] rooms;
-
+    // The ending room
+    private String endingRoom;
 
     /**
      * Gets the room name as a String parsed to have spaces and all that.
@@ -15,6 +16,13 @@ public class Maps {
         return roomNameParse(this.startingRoom);
     }
 
+    /**
+     * The final destination of the player.
+     * @return the ending room parsed from the json map.
+     */
+    public String getEndingRoom() {
+        return this.endingRoom;
+    }
     /**
      * Parses a String to make replace camelcase humps with spaces
      * @param input A string to be parsed
@@ -77,7 +85,4 @@ public class Maps {
         }
         return roomNames;
     }
-
-
-
 }

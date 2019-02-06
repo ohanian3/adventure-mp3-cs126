@@ -24,43 +24,58 @@ public class Main {
         if (user.nextLine().toLowerCase().equals("y")) {
             System.out.println("ok buddy");
             myRoom = map.getStartingRoomObj();
-            gameplay();
+            displayPaths(myRoom);
         } else {
             System.out.println("ok");
         }
     }
 
-    /**
-     * gameplay handling user input and system output
-     */
-    private static void gameplay() {
-        System.out.println("You are in " + map.roomNameParse(myRoom.getName()));
-        displayPaths(myRoom);
-    }
 
     private static void displayPaths(Rooms room) {
+        System.out.println("You are in " + map.roomNameParse(myRoom.getName()));
+        System.out.println(myRoom.getDescription());
+
         ArrayList<String> tempPathStrings = map.printAccesibleRooms(room);
         for (String pathOption : tempPathStrings) {
             System.out.println("You can see " + map.roomNameParse(pathOption));
         }
-        System.out.println("What Now? :");
+        for (Directions pathOption : myRoom.getAllDirections()) {
+            System.out.println("You can go " + pathOption.getDirectionName());
+        }
+        System.out.println("What Now?");
         scanForMovement();
     }
 
-    private static boolean scanForMovement() {
-        ArrayList<String> tempPathStrings = map.printAccesibleRooms(myRoom);
+    private static void scanForMovement() {
+
+        ArrayList<String> tempPathStrings = new ArrayList<>();
+        for (Directions dir : myRoom.getAllDirections()) {
+            tempPathStrings.add(dir.getDirectionName());
+        }
+
         String input = user.nextLine();
+        if (input.toLowerCase().equals("quit") || input.toLowerCase().equals("exit")) {
+            System.exit(69);
+        }
         for (String checkMatch : tempPathStrings) {
             if (input.toLowerCase().equals("go " + map.roomNameParse(checkMatch).toLowerCase())) {
-                System.out.println("Going over to " + map.roomNameParse(checkMatch).toLowerCase() + ".");
+                System.out.println("Going " + map.roomNameParse(checkMatch).toLowerCase() + ".");
                 myRoom = map.accesibleRooms(myRoom).get(tempPathStrings.indexOf(checkMatch));
-                gameplay();
-                return true;
+                if (myRoom.getName().equals(map.getEndingRoom())) {
+                    System.out.println("You have reached your final destination");
+                    System.exit(69);
+                }
+                displayPaths(myRoom);
             }
         }
-        System.out.println("You can't go to " + input + ".\n");
+
+        char[] shakedown = input.toLowerCase().toCharArray();
+        if (shakedown[0] == 'g' && shakedown[1] == 'o') {
+            System.out.println("You can't " + input + ".\n");
+        } else {
+            System.out.println("I don't understand '" + input + "'\n");
+        }
         displayPaths(myRoom);
-        return false;
     }
 
     private static void getInfo() {
@@ -68,7 +83,6 @@ public class Main {
             URL url = new URL("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
             InputStream inStream = url.openStream();
             jsonString = convertStreamToString(inStream);
-            System.out.println(jsonString);
         } catch (Exception MalformedURLException) {
             System.out.println("Malformed URL Error");
         }

@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * A Maps object represents a Map of rooms from a json file.
+ */
 public class Maps {
     /**
      * The starting room as a string.
@@ -21,7 +24,6 @@ public class Maps {
     public boolean checkMap() {
         return (!this.startingRoom.equals("") && !this.endingRoom.equals(""))
     }
-
     /**
      * Gets the room name as a String parsed to have spaces and all that.
      * @return The room name parsed to have spaces.
@@ -29,7 +31,6 @@ public class Maps {
     public String getStartingRoom() {
         return roomNameParse(this.startingRoom);
     }
-
     /**
      * The final destination of the player.
      * @return the ending room parsed from the json map.
@@ -46,7 +47,6 @@ public class Maps {
         // J Sauer https://stackoverflow.com/questions/4886091 to add spaces at caps
         return input.replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2");
     }
-
     /**
      * Helped to parse a room name.
      * @param room The room name to parse.
@@ -55,7 +55,6 @@ public class Maps {
     public String roomNameParse(Rooms room) {
         return roomNameParse(room.getName());
     }
-
     /**
      * Gets the Rooms object associated with the starting room.
      * @return Rooms object that player starts in
@@ -68,7 +67,6 @@ public class Maps {
         }
         return rooms[1];
     }
-
     /**
      * The whole array of rooms that are available.
      * @return All rooms as saved in a Rooms object array.
@@ -76,7 +74,6 @@ public class Maps {
     public Rooms[] getAllRooms() {
         return rooms;
     }
-
     /**
      * Goes through the paths, and gets an array of the Rooms objects attached to them.
      * @param room room that is checked for connections
@@ -95,7 +92,6 @@ public class Maps {
         }
         return allRooms;
     }
-
     /**
      * A helper to get accessible rooms as strings.
      * @param room The room to check for access.

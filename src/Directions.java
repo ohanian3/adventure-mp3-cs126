@@ -1,12 +1,15 @@
+/**
+ * A Directions object represents a direction, and the room that is in that direction.
+ */
 public class Directions extends Rooms{
-    // The direction we can go
+    /**
+     * The direction that this direction object is.
+     */
     private String directionName;
-    // Name of the room in that direction
+    /**
+     * The name of the room that is in this direction.
+     */
     private String room;
-
-    Directions() {
-
-    }
 
     public String getDirectionName() {
         return this.directionName;

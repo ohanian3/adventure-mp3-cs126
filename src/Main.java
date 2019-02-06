@@ -60,7 +60,6 @@ public class Main {
         }
 
     }
-
     /**
      * During gameplay, this function handles results of getting to new room.
      * @param room current room
@@ -87,7 +86,6 @@ public class Main {
         scanForMovement();
         return true;
     }
-
     /**
      * Called when it is time to ask the user what they want to do next, takes user input
      * and decides what to do next.
@@ -122,7 +120,6 @@ public class Main {
         }
         displayPaths(myRoom);
     }
-
     /**
      * Setter for test cases.
      * @param url url to set.
@@ -131,7 +128,6 @@ public class Main {
         urlString = url;
         return getInfo();
     }
-
     /**
      * Gets the json file from given source urlString.
      */
@@ -147,7 +143,6 @@ public class Main {
         }
         return true;
     }
-
     // Peter Mortennson
     // https://stackoverflow.com/questions/309424
     private static String convertStreamToString(java.io.InputStream is) {

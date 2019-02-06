@@ -1,25 +1,27 @@
 import java.util.ArrayList;
 
 public class Maps {
-    // The starting room
+    /**
+     * The starting room as a string.
+     */
     private String startingRoom = "";
-    // An array of all rooms as Rooms objects
+    /**
+     * An array of all rooms in the map.
+     */
     private Rooms[] rooms;
-    // The ending room
+    /**
+     * The ending room as a String.
+     */
     private String endingRoom = "";
 
     /**
-     * Constructor for testing mostly.
+     * Checks if the map given is valid.
+     * @return True if valid, false if not.
      */
-    public Maps() {
+    public boolean checkMap() {
+        return (!this.startingRoom.equals("") && !this.endingRoom.equals(""))
     }
 
-    public boolean checkMap() {
-        if (!this.startingRoom.equals("") && !this.endingRoom.equals("")) {
-            return true;
-        }
-        return false;
-    }
     /**
      * Gets the room name as a String parsed to have spaces and all that.
      * @return The room name parsed to have spaces.
@@ -45,6 +47,11 @@ public class Maps {
         return input.replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2");
     }
 
+    /**
+     * Helped to parse a room name.
+     * @param room The room name to parse.
+     * @return A parsed room name.
+     */
     public String roomNameParse(Rooms room) {
         return roomNameParse(room.getName());
     }
@@ -89,6 +96,11 @@ public class Maps {
         return allRooms;
     }
 
+    /**
+     * A helper to get accessible rooms as strings.
+     * @param room The room to check for access.
+     * @return An ArrayList of rooms that can be accessed as Strings.
+     */
     public ArrayList<String> printAccesibleRooms(Rooms room) {
         ArrayList<Rooms> allRooms = accesibleRooms(room);
         ArrayList<String> roomNames = new ArrayList<>();

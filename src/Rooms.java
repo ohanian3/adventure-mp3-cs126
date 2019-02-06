@@ -1,9 +1,16 @@
 public class Rooms extends Maps{
+    /**
+     * The name of this room.
+     */
     private String name;
+    /**
+     * A description of this room.
+     */
     private String description;
+    /**
+     * All directions that can be gone from this room.
+     */
     private Directions[] directions;
-    Rooms () {
-    }
 
     public String getName() {
         return this.name;

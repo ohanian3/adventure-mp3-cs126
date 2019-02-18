@@ -1,4 +1,4 @@
-public class Rooms extends Maps{
+public class Room extends Map{
     /**
      * The name of this room.
      */
@@ -10,7 +10,10 @@ public class Rooms extends Maps{
     /**
      * All directions that can be gone from this room.
      */
-    private Directions[] directions;
+    private Direction[] directions;
+
+    /** Items array */
+    private Item[] items;
 
     public String getName() {
         return this.name;
@@ -20,8 +23,12 @@ public class Rooms extends Maps{
         return this.description;
     }
 
-    public Directions[] getAllDirections() {
+    public Direction[] getAllDirections() {
         return this.directions;
+    }
+
+    public Item[] getItems() {
+        return this.items;
     }
 
 

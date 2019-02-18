@@ -1,4 +1,19 @@
 DEVELOPMENTS.md
 
-Haven't got any feedback on adventures yet so i'm just gonna 
-leave this blank for now but still committing so i dont forget.
+Feedback from adventure 1 :
+
+    Rename classes ro not have 's' at end
+    
+    
+    add better vertical spacing
+    
+    Seperate scan/printing functions from functions
+    execute code
+    
+    Make my tests not so bad
+    
+Changes made in this fork :
+
+    - Classes renamed to not have s at end
+    
+    

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * A Maps object represents a Map of rooms from a json file.
  */
-public class Maps {
+public class Map {
     /**
      * The starting room as a string.
      */
@@ -11,7 +11,7 @@ public class Maps {
     /**
      * An array of all rooms in the map.
      */
-    private Rooms[] rooms;
+    private Room[] rooms;
     /**
      * The ending room as a String.
      */
@@ -22,7 +22,7 @@ public class Maps {
      * @return True if valid, false if not.
      */
     public boolean checkMap() {
-        return (!this.startingRoom.equals("") && !this.endingRoom.equals(""))
+        return (!this.startingRoom.equals("") && !this.endingRoom.equals(""));
     }
     /**
      * Gets the room name as a String parsed to have spaces and all that.
@@ -52,15 +52,15 @@ public class Maps {
      * @param room The room name to parse.
      * @return A parsed room name.
      */
-    public String roomNameParse(Rooms room) {
+    public String roomNameParse(Room room) {
         return roomNameParse(room.getName());
     }
     /**
      * Gets the Rooms object associated with the starting room.
      * @return Rooms object that player starts in
      */
-    public Rooms getStartingRoomObj() {
-        for (Rooms curr : rooms) {
+    public Room getStartingRoomObj() {
+        for (Room curr : rooms) {
             if (curr.getName().equals(this.startingRoom)) {
                 return curr;
             }
@@ -71,7 +71,7 @@ public class Maps {
      * The whole array of rooms that are available.
      * @return All rooms as saved in a Rooms object array.
      */
-    public Rooms[] getAllRooms() {
+    public Room[] getAllRooms() {
         return rooms;
     }
     /**
@@ -79,12 +79,12 @@ public class Maps {
      * @param room room that is checked for connections
      * @return An array if all connected rooms as Rooms objects.
      */
-    public ArrayList<Rooms> accesibleRooms(Rooms room) {
-        Directions[] allPaths = room.getAllDirections();
-        ArrayList<Rooms> allRooms = new ArrayList<>();
+    public ArrayList<Room> accesibleRooms(Room room) {
+        Direction[] allPaths = room.getAllDirections();
+        ArrayList<Room> allRooms = new ArrayList<>();
 
-        for (Rooms currRoom : rooms) {
-            for (Directions direction : allPaths) {
+        for (Room currRoom : rooms) {
+            for (Direction direction : allPaths) {
                 if (direction.getRoom().equals(currRoom.getName())) {
                     allRooms.add(currRoom);
                 }
@@ -97,10 +97,10 @@ public class Maps {
      * @param room The room to check for access.
      * @return An ArrayList of rooms that can be accessed as Strings.
      */
-    public ArrayList<String> printAccesibleRooms(Rooms room) {
-        ArrayList<Rooms> allRooms = accesibleRooms(room);
+    public ArrayList<String> printAccesibleRooms(Room room) {
+        ArrayList<Room> allRooms = accesibleRooms(room);
         ArrayList<String> roomNames = new ArrayList<>();
-        for (Rooms currRoom : allRooms) {
+        for (Room currRoom : allRooms) {
             roomNames.add(currRoom.getName());
         }
         return roomNames;

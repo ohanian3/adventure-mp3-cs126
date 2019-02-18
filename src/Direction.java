@@ -1,7 +1,7 @@
 /**
  * A Directions object represents a direction, and the room that is in that direction.
  */
-public class Directions extends Rooms{
+public class Direction extends Room{
     /**
      * The direction that this direction object is.
      */

@@ -20,11 +20,11 @@ public class Main {
     /**
      * The current map.
      */
-    private static Maps map;
+    private static Map map;
     /**
      * The Rooms object of the room the player is currently in.
      */
-    private static Rooms myRoom;
+    private static Room myRoom;
     /**
      * The url of the current json to be used, default set here.
      */
@@ -40,7 +40,7 @@ public class Main {
             System.out.println("ok buddy");
             getInfo();
             Gson gson = new Gson();
-            map = gson.fromJson(jsonString, Maps.class);
+            map = gson.fromJson(jsonString, Map.class);
             myRoom = map.getStartingRoomObj();
             displayPaths(myRoom);
         } else {
@@ -53,7 +53,7 @@ public class Main {
                 urlString = input;
                 getInfo();
                 Gson gson = new Gson();
-                map = gson.fromJson(jsonString, Maps.class);
+                map = gson.fromJson(jsonString, Map.class);
                 myRoom = map.getStartingRoomObj();
                 displayPaths(myRoom);
             }
@@ -65,7 +65,7 @@ public class Main {
      * @param room current room
      * @return true if success, false if room was invalid
      */
-    public static boolean displayPaths(Rooms room) {
+    public static boolean displayPaths(Room room) {
         // Test that it is a usable room
         try {
             map.printAccesibleRooms(room).get(0);
@@ -74,12 +74,24 @@ public class Main {
             return false;
         }
         System.out.println("You are in " + map.roomNameParse(myRoom.getName()));
-        System.out.println(myRoom.getDescription());
+
+        // Get items and print them and all that
+        if (room.getItems() != null) {
+            System.out.println("Items in this room: ");
+            for (Item item : room.getItems()) {
+                System.out.println(item.getName());
+            }
+        } else {
+            System.out.println("No items in this room.");
+        }
+
+
+        System.out.println("\n" + myRoom.getDescription());
         ArrayList<String> tempPathStrings = map.printAccesibleRooms(room);
         for (String pathOption : tempPathStrings) {
             System.out.println("You can see " + map.roomNameParse(pathOption));
         }
-        for (Directions pathOption : myRoom.getAllDirections()) {
+        for (Direction pathOption : myRoom.getAllDirections()) {
             System.out.println("You can go " + pathOption.getDirectionName());
         }
         System.out.println("What Now?");
@@ -92,7 +104,7 @@ public class Main {
      */
     private static void scanForMovement() {
         ArrayList<String> tempPathStrings = new ArrayList<>();
-        for (Directions dir : myRoom.getAllDirections()) {
+        for (Direction dir : myRoom.getAllDirections()) {
             tempPathStrings.add(dir.getDirectionName());
         }
         String input = user.nextLine();

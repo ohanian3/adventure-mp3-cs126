@@ -21,4 +21,5 @@ Changes made in this fork :
     - Fixed poor javadoc
     - Added ability to add bots
     - Added ability to add extra human players
+    - Added count of number of moves to win
     

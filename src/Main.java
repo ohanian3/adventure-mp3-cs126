@@ -34,6 +34,10 @@ public class Main {
     /** A map of the room each player is in */
     private static HashMap<Player, Room> playerRoom = new HashMap<>();
 
+    /** Counts how many moves each player has taken */
+    private static HashMap<Player, Integer> playCount = new HashMap<>();
+
+
     /**
      * Main function that starts the game, or allows new url to be input.
      * @param args unused
@@ -54,6 +58,7 @@ public class Main {
 
             System.out.println("Number of bots: ");
             int botCount = userIn.nextInt();
+
             for (int i = 0; i < botCount + 1; i++) {
                 players.add(new Player(false, "Bot " + (i + 1)));
             }
@@ -73,6 +78,7 @@ public class Main {
             // Put each player in the playerRoom map with the starting room
             for (Player play : players) {
                 playerRoom.put(play, myRoom);
+                playCount.put(play, 0);
             }
 
             displayPaths(myRoom, players.get(0));
@@ -133,15 +139,20 @@ public class Main {
             System.exit(0);
         }
 
+        // For each possible outcome, increment play count and pass the turn off
        if (checkMove(input, player) != null) {
-            enterRoom(player, input, false);
+           playCount.put(player, playCount.get(player) + 1);
+           enterRoom(player, input, false);
        } else if (checkPickup(input) != null) {
            itemBag.add(checkPickup(input));
            player.setItems(checkPickup(input));
+           playCount.put(player, playCount.get(player) + 1);
            displayPaths(playerRoom.get(nextPlayer(player)), nextPlayer(player));
        } else if (checkMoveWithKey(input, player) != null) {
+           playCount.put(player, playCount.get(player) + 1);
            enterRoom(player, input, true);
        }else {
+           // Unknown input
            char[] shakedown = input.toLowerCase().toCharArray();
            if (shakedown[0] == 'g' && shakedown[1] == 'o') {
                System.out.println("You can't " + input + ".\n");
@@ -168,7 +179,8 @@ public class Main {
 
         // Check if this player has reached the final room
         if (playerRoom.get(player).getName().equals(map.getEndingRoom())) {
-            System.out.println(player.getName() + " has reached the final destination");
+            System.out.print(player.getName() + " has reached the final destination");
+            System.out.print(". It took him " + playCount.get(player) + " moves.");
             System.exit(0);
         }
 

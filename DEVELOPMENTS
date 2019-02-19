@@ -19,4 +19,6 @@ Changes made in this fork :
       multiple pieces to keep scan, printing seperate
       from gameplay
     - Fixed poor javadoc
+    - Added ability to add bots
+    - Added ability to add extra human players
     

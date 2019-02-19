@@ -248,15 +248,11 @@ public class Main {
         return null;
     }
 
-    private static Item checkUseItem(String input) {
-        for (Item item : itemBag) {
-            if (input.toLowerCase().equals("use " + item.getName())) {
-                return item;
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Helper ot determine the next player.
+     * @param player current player
+     * @return next player
+     */
     private static Player nextPlayer(Player player) {
        if (players.indexOf(player) < players.size() - 2) {
            return players.get(players.indexOf(player) + 1);

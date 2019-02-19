@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Player extends Map {
+
     private Item[] items;
 
     private String name;
@@ -16,7 +17,7 @@ public class Player extends Map {
                                             {"northeast", "southwest"}, {"southwest", "northeast"},
                                             {"northwest", "southeast"}, {"southeast", "northwest"}};
 
-    /** The last direction the bot went, to help it not be dumb*/
+    /** The last direction the bot went, to help it not be dumb */
     private String lastMove = "";
 
     public Player() {
@@ -32,15 +33,28 @@ public class Player extends Map {
         return this.items;
     }
 
-    public void setItems(Item item) {
+    public boolean setItems(Item item) {
+        if (items == null || items.length < 1) {
+            items = new Item[1];
+            items[0] = item;
+            return false;
+        }
+
         Item[] tempItems = new Item[items.length + 1];
         for (int i = 0; i < items.length; i++) {
             tempItems[i] = items[i];
         }
         tempItems[items.length] = item;
         this.items = tempItems;
+        return true;
     }
 
+    /**
+     * Gets the move for the player in given room.
+     * @param code idfk
+     * @param room The current room
+     * @return A string that says what this player wants to do
+     */
     public String getMove(int code, Room room) {
         // If real player
         if (this.person) {
@@ -70,17 +84,25 @@ public class Player extends Map {
             Collections.shuffle(validMoves);
             this.lastMove = validMoves.get(0);
             return validMoves.get(0);
-        } else {
+        } else if (room.getAllDirections().length > 0){
             return "go " + room.getAllDirections()[0];
         }
+        return "quit";
 
-        //return "quit";
     }
 
+    /**
+     * Set the name of this player.
+     * @param name name to set to
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get the name of this player
+     * @return
+     */
     public String getName() {
         return this.name;
     }

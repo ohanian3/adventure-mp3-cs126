@@ -11,12 +11,21 @@ public class Direction extends Room{
      */
     private String room;
 
+    private String enabled;
+
     public String getDirectionName() {
         return this.directionName;
     }
 
     public String getRoom() {
         return this.room;
+    }
+
+    public boolean getEnabled() {
+        if (enabled == null) {
+            return true;
+        }
+        return enabled.equals("true");
     }
 
 }

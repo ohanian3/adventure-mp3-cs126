@@ -4,7 +4,6 @@ Feedback from adventure 1 :
 
     Rename classes ro not have 's' at end
     
-    
     add better vertical spacing
     
     Seperate scan/printing functions from functions
@@ -15,5 +14,9 @@ Feedback from adventure 1 :
 Changes made in this fork :
 
     - Classes renamed to not have s at end
-    
+    - Added vertical spacing through old code
+    - Seperated parts of Main.displayPath() into
+      multiple pieces to keep scan, printing seperate
+      from gameplay
+    - Fixed poor javadoc
     

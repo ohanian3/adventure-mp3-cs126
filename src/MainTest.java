@@ -13,18 +13,18 @@ public class MainTest {
 
     @Test
     public void testInvalidRooms() {
-        assertFalse(Main.displayPaths(new Rooms()));
+        assertFalse(Main.displayPaths(new Room(), new Player(false, "test")));
     }
 
     @Test
     public void testValidMap() {
-        Maps test = gson.fromJson("{startingRoom: Room1, endingRoom: Room5}", Maps.class);
+        Map test = gson.fromJson("{startingRoom: Room1, endingRoom: Room5}", Map.class);
         assertTrue(test.checkMap());
     }
 
     @Test
     public void testInvalidMap() {
-        Maps test = gson.fromJson("{startingRoom: Room1}", Maps.class);
+        Map test = gson.fromJson("{startingRoom: Room1}", Map.class);
         assertFalse(test.checkMap());
     }
 

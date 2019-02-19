@@ -34,7 +34,6 @@ public class Main {
     /** A map of the room each player is in */
     private static HashMap<Player, Room> playerRoom = new HashMap<>();
 
-
     /**
      * Main function that starts the game, or allows new url to be input.
      * @param args unused
@@ -63,8 +62,7 @@ public class Main {
             botCount = userIn.nextInt();
             for (int i = 0; i < botCount + 1; i++) {
                 System.out.println("Name for this player: ");
-                String nameTemp = userIn.nextLine();
-                players.add(new Player(true, nameTemp));
+                players.add(new Player(true, userIn.nextLine()));
             }
 
             getInfo();
@@ -136,27 +134,13 @@ public class Main {
         }
 
        if (checkMove(input, player) != null) {
-           // Get and display this players move
-           playerRoom.put(player, checkMove(input, player));
-           System.out.println(player.getName() + " : " + input);
-
-            // Check if this player has reached the final room
-           if (playerRoom.get(player).getName().equals(map.getEndingRoom())) {
-               System.out.println(player.getName() + " has reached the final destination");
-               System.exit(0);
-           }
-
-           // Get next player and print their turn info
-           displayPaths(playerRoom.get(nextPlayer(player)), nextPlayer(player));
-
-           // If they picked up an item, grab item then next players turn
+            enterRoom(player, input, false);
        } else if (checkPickup(input) != null) {
            itemBag.add(checkPickup(input));
+           player.setItems(checkPickup(input));
            displayPaths(playerRoom.get(nextPlayer(player)), nextPlayer(player));
-       } else if (checkUseItem(input) != null) {
-           //TODO make class to handle properties of items
-
-           // There was an invalid move made, print
+       } else if (checkMoveWithKey(input, player) != null) {
+           enterRoom(player, input, true);
        }else {
            char[] shakedown = input.toLowerCase().toCharArray();
            if (shakedown[0] == 'g' && shakedown[1] == 'o') {
@@ -166,6 +150,30 @@ public class Main {
            }
            displayPaths(playerRoom.get(player), player);
        }
+    }
+
+    /**
+     * A function to make the changes to a player as well as playerRoom map after a new room is entered.
+     * @param player Player changing rooms
+     * @param input The input of the current turn
+     * @param key boolean : true if a key (Item) was used
+     */
+    private static void enterRoom(Player player, String input, boolean key) {
+        if (key) {
+            playerRoom.put(player, checkMoveWithKey(input, player));
+        } else {
+            playerRoom.put(player, checkMove(input, player));
+        }
+        System.out.println(player.getName() + " : " + input);
+
+        // Check if this player has reached the final room
+        if (playerRoom.get(player).getName().equals(map.getEndingRoom())) {
+            System.out.println(player.getName() + " has reached the final destination");
+            System.exit(0);
+        }
+
+        // Get next player and print their turn info
+        displayPaths(playerRoom.get(nextPlayer(player)), nextPlayer(player));
     }
 
     /**
@@ -198,8 +206,31 @@ public class Main {
         return null;
     }
 
-    private static String checkMoveWithKey(String input) {
-        return "key"; //TODO
+    /**
+     * Check if a move is possible with a key.
+     * @param input the player input
+     * @param player The player trying to move
+     * @return The room if possible to get into, or null.
+     */
+    private static Room checkMoveWithKey(String input, Player player) {
+        ArrayList<String> tempPathStrings = new ArrayList<>();
+        for (Direction dir : playerRoom.get(player).getAllDirections()) {
+            tempPathStrings.add(dir.getDirectionName());
+        }
+
+        Room room = playerRoom.get(player);
+        for (Direction dir : room.getAllDirections()) {
+            if (dir.getEnabled()) {
+                return null;
+            } else {
+                for (String validKey : dir.getValidKeyNames()) {
+                    if (input.toLowerCase().equals("use " + validKey.toLowerCase() +" with "+ dir.getDirectionName())) {
+                        return map.accesibleRooms(playerRoom.get(player)).get(tempPathStrings.indexOf(dir.getDirectionName()));
+                    }
+                }
+            }
+        }
+        return null;
     }
     /**
      * Check if the input is an attempt to pick up an item.

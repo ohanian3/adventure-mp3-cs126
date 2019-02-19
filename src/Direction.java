@@ -11,6 +11,8 @@ public class Direction extends Room{
      */
     private String room;
 
+    private String[] validKeyNames;
+
     private String enabled;
 
     public String getDirectionName() {
@@ -26,6 +28,10 @@ public class Direction extends Room{
             return true;
         }
         return enabled.equals("true");
+    }
+
+    public String[] getValidKeyNames() {
+        return this.validKeyNames;
     }
 
 }
